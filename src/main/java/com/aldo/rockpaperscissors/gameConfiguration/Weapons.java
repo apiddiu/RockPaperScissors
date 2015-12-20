@@ -1,9 +1,9 @@
-package com.aldo.rockpaperscissors.gameConfigurations;
+package com.aldo.rockpaperscissors.gameConfiguration;
 
 public enum Weapons {
-    ROCK(1),
-    PAPER(2),
-    SCISSORS(3);
+    ROCK(0),
+    PAPER(1),
+    SCISSORS(2);
     
     private Weapons(int position){
         this.position = position;
