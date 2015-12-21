@@ -70,7 +70,6 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     private void startNewGame(ActionEvent event) {
         reset();
         game = GameInitializer.humanGameExecution(this, this, this::updatePlayer1, this::updatePlayer2, this::updateDraws);
-        System.out.println("Start New Game");
         turnOff(pnlAi);
         turnOn(pnlHuman);
         turnOn(pnlAi2);

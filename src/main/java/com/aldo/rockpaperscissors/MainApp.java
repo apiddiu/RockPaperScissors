@@ -7,11 +7,12 @@ import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
     
-    private static Collection<AppCloseObserver> appCloseObservers = new ArrayList<>();
+    private static final Collection<AppCloseObserver> appCloseObservers = new ArrayList<>();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -22,12 +23,12 @@ public class MainApp extends Application {
 
         stage.setTitle("Rock Paper Scissors");
         stage.setScene(scene);
+        stage.getIcons().add(new Image("/images/rps.jpg"));
         stage.show();
     }
 
     @Override
     public void stop() {
-        System.out.println("Stage is closing");
         appCloseObservers.forEach(o -> o.onClose());
     }
 
