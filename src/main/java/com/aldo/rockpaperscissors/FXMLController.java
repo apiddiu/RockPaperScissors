@@ -13,11 +13,18 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Paint;
 
 public class FXMLController implements Initializable, GameResultObserver, MovePicker {
 
@@ -61,6 +68,15 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     @FXML
     private ImageView imgPlayer2;
     
+    @FXML
+    private Button btnRock;
+    
+    @FXML
+    private Button btnPaper;
+    
+    @FXML
+    private Button btnScissors;
+    
     public FXMLController(){
         game = GameInitializer.humanGameExecution(this, this, this::updatePlayer1, this::updatePlayer2, this::updateDraws);
         aiGame = GameInitializer.aiGameExecution(this, this::updatePlayer1, this::updatePlayer2, this::updateDraws);
@@ -91,18 +107,27 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     @FXML
     private void playRock(ActionEvent event) {
         lastPlayerMove = Weapons.ROCK;
+        highlight(btnRock);
+        plain(btnScissors);
+        plain(btnPaper);
         game.run();
     }
 
     @FXML
     private void playPaper(ActionEvent event) {
         lastPlayerMove = Weapons.PAPER;
+        highlight(btnPaper);
+        plain(btnScissors);
+        plain(btnRock);
         game.run();
     }
 
     @FXML
     private void playScissors(ActionEvent event) {
         lastPlayerMove = Weapons.SCISSORS;
+        highlight(btnScissors);
+        plain(btnPaper);
+        plain(btnRock);
         game.run();
     }
 
@@ -122,12 +147,12 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
 
     @Override
     public void player1Wins(int w1, int w2) {
-        Platform.runLater(() -> showResult(w1, w2, "player1 WINS"));
+        Platform.runLater(() -> showResult(w1, w2, "Player1 WINS"));
     }
 
     @Override
     public void player2Wins(int w1, int w2) {
-        Platform.runLater(() -> showResult(w1, w2, "player2 WINS"));
+        Platform.runLater(() -> showResult(w1, w2, "Player2 WINS"));
     }
 
     @Override
@@ -175,6 +200,9 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
         lblDraw.setText("Draws:");
         imgPlayer1.setImage(new Image("images/Unknown.png"));
         imgPlayer2.setImage(new Image("images/Unknown.png"));
+        plain(btnRock);
+        plain(btnPaper);
+        plain(btnScissors);
     }
 
     private void turnOff(Control control) {
@@ -185,5 +213,13 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     private void turnOn(Control control) {
         control.setManaged(true);
         control.setVisible(true);
+    }
+    
+    private void highlight(Control control){
+        control.setStyle("-fx-border-color: darkcyan;  -fx-border-width: 3; -fx-border-style: solid;");
+    }
+    
+    private void plain(Control control){
+        control.setStyle("-fx-border-style: none;");
     }
 }
