@@ -5,13 +5,26 @@ import static java.lang.Thread.sleep;
 
 class GameRunnerImpl implements GameRunner {
 
+    private static GameRunner instance;
     private final Game game;
     private final long interval;
     private Thread gameThread;
     private volatile boolean running = true;
 
-    GameRunnerImpl(Game game) {
-        this(game, 1000);
+    static GameRunner currentInstance() {
+        return instance;
+    }
+
+    static GameRunner createInstance(Game game) {
+        return createInstance(game, 1000);
+    }
+
+    static GameRunner createInstance(Game game, long interval) {
+        if (instance != null) {
+            instance.stop();
+        }
+        instance = new GameRunnerImpl(game, interval);
+        return instance;
     }
 
     GameRunnerImpl(Game game, long interval) {
@@ -19,13 +32,12 @@ class GameRunnerImpl implements GameRunner {
         this.game = game;
         this.interval = interval;
     }
-    
+
     @Override
-    public void toggle(){
-        if(gameThread!=null && gameThread.isAlive()){
+    public void toggle() {
+        if (gameThread != null && gameThread.isAlive()) {
             stop();
-        }
-        else{
+        } else {
             start();
         }
     }

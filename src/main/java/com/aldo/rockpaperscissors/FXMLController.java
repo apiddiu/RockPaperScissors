@@ -51,7 +51,7 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
 
     @FXML
     private Label lblPlayer2;
-    
+
     @FXML
     private Label lblDraw;
 
@@ -60,6 +60,11 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
 
     @FXML
     private ImageView imgPlayer2;
+    
+    public FXMLController(){
+        game = GameInitializer.humanGameExecution(this, this, this::updatePlayer1, this::updatePlayer2, this::updateDraws);
+        aiGame = GameInitializer.aiGameExecution(this, this::updatePlayer1, this::updatePlayer2, this::updateDraws);
+    }
 
     @FXML
     private void startNewGame(ActionEvent event) {
@@ -75,8 +80,8 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     @FXML
     private void startNewAiGame(ActionEvent event) {
         reset();
-
         aiGame = GameInitializer.aiGameExecution(this, this::updatePlayer1, this::updatePlayer2, this::updateDraws);
+
 
         turnOff(pnlHuman);
         turnOn(pnlAi);
@@ -133,7 +138,7 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        MainApp.addAppCloseObserver(() -> aiGame.stop());
     }
 
     private void showResult(int w1, int w2, String result) {
@@ -156,7 +161,7 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     private void updatePlayer2(int playerPoints) {
         Platform.runLater(() -> lblPlayer2.setText(String.format("Player2: %d", playerPoints)));
     }
-    
+
     private void updateDraws(int draws) {
         Platform.runLater(() -> lblDraw.setText(String.format("Draws: %d", draws)));
     }
