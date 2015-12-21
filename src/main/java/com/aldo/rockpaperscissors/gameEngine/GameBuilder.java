@@ -1,4 +1,4 @@
-package com.aldo.rockpaperscissors.game;
+package com.aldo.rockpaperscissors.gameEngine;
 
 public class GameBuilder {  
     public static Game buildGame(int movesCount, Player p1, Player p2, GameResultObserver rL){

@@ -1,6 +1,6 @@
 package com.aldo.rockpaperscissors.gameExecution;
 
-import com.aldo.rockpaperscissors.game.GameResultObserver;
+import com.aldo.rockpaperscissors.gameEngine.GameResultObserver;
 import java.util.Collection;
 
 class CompositeGameObserver implements GameResultObserver {

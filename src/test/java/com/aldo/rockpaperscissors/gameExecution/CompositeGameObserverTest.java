@@ -1,6 +1,6 @@
 package com.aldo.rockpaperscissors.gameExecution;
 
-import com.aldo.rockpaperscissors.game.GameResultObserver;
+import com.aldo.rockpaperscissors.gameEngine.GameResultObserver;
 import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;

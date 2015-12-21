@@ -1,4 +1,4 @@
-package com.aldo.rockpaperscissors.game;
+package com.aldo.rockpaperscissors.gameEngine;
 
 class GameEngineImpl implements GameEngine {
 

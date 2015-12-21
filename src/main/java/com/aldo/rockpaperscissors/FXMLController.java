@@ -1,7 +1,7 @@
 package com.aldo.rockpaperscissors;
 
-import com.aldo.rockpaperscissors.game.Game;
-import com.aldo.rockpaperscissors.game.GameResultObserver;
+import com.aldo.rockpaperscissors.gameEngine.Game;
+import com.aldo.rockpaperscissors.gameEngine.GameResultObserver;
 import com.aldo.rockpaperscissors.gameConfiguration.GameConfiguration;
 import com.aldo.rockpaperscissors.gameConfiguration.Weapons;
 import com.aldo.rockpaperscissors.gameExecution.GameInitializer;

@@ -1,6 +1,6 @@
 package com.aldo.rockpaperscissors.gameExecution;
 
-import com.aldo.rockpaperscissors.game.Player;
+import com.aldo.rockpaperscissors.gameEngine.Player;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;

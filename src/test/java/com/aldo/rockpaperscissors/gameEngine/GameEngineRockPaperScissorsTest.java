@@ -1,4 +1,4 @@
-package com.aldo.rockpaperscissors.game;
+package com.aldo.rockpaperscissors.gameEngine;
 
 import junitparams.JUnitParamsRunner;
 import org.junit.Before;
@@ -8,11 +8,11 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @RunWith(JUnitParamsRunner.class)
-public class GameEngineRockPaperScissorsLizardSpockTest implements GameResultChecker{
+public class GameEngineRockPaperScissorsTest implements GameResultChecker {
 
     private GameEngineImpl engine;
     private GameResultObserver result;
-    private final int weapons = 5;
+    private final int weapons = 3;
 
     @Before
     public void setUp() {
@@ -24,20 +24,10 @@ public class GameEngineRockPaperScissorsLizardSpockTest implements GameResultChe
     public void rockVsRockIsADrawTest() {
         runTest(rock(), rock(), this::verifyDraw);
     }
-    
-    @Test
-    public void spockVsSpockIsADrawTest() {
-        runTest(spock(), spock(), this::verifyDraw);
-    }
 
     @Test
     public void paperVsPaperIsADrawTest() {
         runTest(paper(), paper(), this::verifyDraw);
-    }
-    
-    @Test
-    public void lizardVsLizardIsADrawTest() {
-        runTest(lizard(), lizard(), this::verifyDraw);
     }
 
     @Test
@@ -49,16 +39,6 @@ public class GameEngineRockPaperScissorsLizardSpockTest implements GameResultChe
     public void rockBeatsScissorsTest() {
         runTest(rock(), scissors(), this::verifyPlayer1Wins);
     }
-    
-    @Test
-    public void rockBeatsLizardTest() {
-        runTest(rock(), lizard(), this::verifyPlayer1Wins);
-    }
-    
-    @Test
-    public void rockIsBeatenBySpockTest() {
-        runTest(rock(), spock(), this::verifyPlayer2Wins);
-    }
 
     @Test
     public void rockIsBeatenByPaperTest() {
@@ -68,16 +48,6 @@ public class GameEngineRockPaperScissorsLizardSpockTest implements GameResultChe
     @Test
     public void paperBeatsRockTest() {
         runTest(paper(), rock(), this::verifyPlayer1Wins);
-    }
-    
-    @Test
-    public void paperBeatsSpockTest() {
-        runTest(paper(), spock(), this::verifyPlayer1Wins);
-    }
-    
-    @Test
-    public void paperIsBeatenByLizardTest() {
-        runTest(paper(), lizard(), this::verifyPlayer2Wins);
     }
 
     @Test
@@ -89,20 +59,10 @@ public class GameEngineRockPaperScissorsLizardSpockTest implements GameResultChe
     public void scissorsBeatsPaperTest() {
         runTest(scissors(), paper(), this::verifyPlayer1Wins);
     }
-    
-    @Test
-    public void scissorsBeatsLizardTest() {
-        runTest(scissors(), lizard(), this::verifyPlayer1Wins);
-    }
 
     @Test
     public void scissorsIsBeatenByRockTest() {
         runTest(scissors(), rock(), this::verifyPlayer2Wins);
-    }
-    
-    @Test
-    public void scissorsIsBeatenBySpockTest() {
-        runTest(scissors(), spock(), this::verifyPlayer2Wins);
     }
 
     public void runTest(int w1, int w2, GameResultVerifier verifyResult) {
@@ -114,20 +74,13 @@ public class GameEngineRockPaperScissorsLizardSpockTest implements GameResultChe
     private int rock() {
         return 0;
     }
-    
-    private int spock() {
+
+    private int paper() {
         return 1;
     }
 
-    private int paper() {
+    private int scissors() {
         return 2;
     }
-    
-    private int lizard() {
-        return 3;
-    }
-    
-    private int scissors() {
-        return 4;
-    }
+
 }

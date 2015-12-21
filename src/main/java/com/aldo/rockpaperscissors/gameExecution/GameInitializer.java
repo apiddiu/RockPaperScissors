@@ -1,9 +1,9 @@
 package com.aldo.rockpaperscissors.gameExecution;
 
-import com.aldo.rockpaperscissors.game.Game;
-import com.aldo.rockpaperscissors.game.GameBuilder;
-import com.aldo.rockpaperscissors.game.GameResultObserver;
-import com.aldo.rockpaperscissors.game.Player;
+import com.aldo.rockpaperscissors.gameEngine.Game;
+import com.aldo.rockpaperscissors.gameEngine.GameBuilder;
+import com.aldo.rockpaperscissors.gameEngine.GameResultObserver;
+import com.aldo.rockpaperscissors.gameEngine.Player;
 import com.aldo.rockpaperscissors.gameConfiguration.GameConfiguration;
 import java.util.Arrays;
 

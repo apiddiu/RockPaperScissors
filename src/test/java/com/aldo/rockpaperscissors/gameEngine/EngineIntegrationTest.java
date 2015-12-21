@@ -1,4 +1,4 @@
-package com.aldo.rockpaperscissors.game;
+package com.aldo.rockpaperscissors.gameEngine;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
