@@ -4,35 +4,30 @@ import com.aldo.rockpaperscissors.gameEngine.Player;
 
 class PlayerImpl implements Player {
 
-    private int playerPoints;
+    private final Counter counter;
     private int currentMove;
     private final MovePicker movePicker;
-    private final PlayerObserver observer;
-    
-    public static PlayerImpl aiPlayer(int movesCount, PlayerObserver observer){
+
+    public static PlayerImpl aiPlayer(int movesCount, CountObserver observer) {
         return new PlayerImpl(new RandomMovePicker(movesCount), observer);
     }
-    
-    public static PlayerImpl humanPlayer(MovePicker movePicker, PlayerObserver observer){
+
+    public static PlayerImpl humanPlayer(MovePicker movePicker, CountObserver observer) {
         return new PlayerImpl(movePicker, observer);
     }
 
-    private PlayerImpl(MovePicker movePicker, PlayerObserver observer) {
+    private PlayerImpl(MovePicker movePicker, CountObserver observer) {
+        this(movePicker, new Counter(observer));
+    }
+    
+    private PlayerImpl(MovePicker movePicker, Counter counter) {
         this.movePicker = movePicker;
-        this.playerPoints = 0;
-        this.observer = observer;
-        observer.pointsChanged(0);
+        this.counter = counter;
     }
 
     @Override
     public void win() {
-        ++playerPoints;
-        observer.pointsChanged(playerPoints);
-    }
-
-    @Override
-    public int getPoints() {
-        return playerPoints;
+        counter.increase();
     }
 
     @Override

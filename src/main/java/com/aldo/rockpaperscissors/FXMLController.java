@@ -5,9 +5,11 @@ import com.aldo.rockpaperscissors.gameEngine.GameResultObserver;
 import com.aldo.rockpaperscissors.gameConfiguration.GameConfiguration;
 import com.aldo.rockpaperscissors.gameConfiguration.Weapons;
 import com.aldo.rockpaperscissors.gameExecution.GameInitializer;
+import com.aldo.rockpaperscissors.gameExecution.GameRunner;
 import com.aldo.rockpaperscissors.gameExecution.MovePicker;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,16 +23,17 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
 
     private Weapons lastPlayerMove;
     private Game game;
+    private int draws = 0;
 
     @FXML
     private TitledPane pnlHuman;
 
     @FXML
     private TitledPane pnlAi;
-    
+
     @FXML
     private TitledPane pnlAi2;
-    
+
     @FXML
     private TitledPane pnlResult;
 
@@ -48,6 +51,9 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
 
     @FXML
     private Label lblPlayer2;
+    
+    @FXML
+    private Label lblDraw;
 
     @FXML
     private ImageView imgPlayer1;
@@ -55,10 +61,13 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     @FXML
     private ImageView imgPlayer2;
 
+    private GameRunner aiGame;
+    private Thread aiThread;
+
     @FXML
     private void startNewGame(ActionEvent event) {
         reset();
-        game = GameInitializer.humanGameExecution(this, this, this::updatePlayer1, this::updatePlayer2);
+        game = GameInitializer.humanGameExecution(this, this, this::updatePlayer1, this::updatePlayer2, this::updateDraws);
         System.out.println("Start New Game");
         turnOff(pnlAi);
         turnOn(pnlHuman);
@@ -69,15 +78,15 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     @FXML
     private void startNewAiGame(ActionEvent event) {
         reset();
-        
-        game = GameInitializer.aiGameExecution(this, this::updatePlayer1, this::updatePlayer2);
+
+        game = GameInitializer.aiGameExecution(this, this::updatePlayer1, this::updatePlayer2, this::updateDraws);
 
         turnOff(pnlHuman);
         turnOn(pnlAi);
         turnOn(pnlAi2);
         turnOn(pnlResult);
     }
-    
+
     @FXML
     private void playRock(ActionEvent event) {
         lastPlayerMove = Weapons.ROCK;
@@ -98,22 +107,38 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
 
     @FXML
     private void playAiVsAi(ActionEvent event) {
-        game.run();
+        toggleAiGame();
+    }
+
+    private void toggleAiGame() {
+        if (aiThread != null && aiThread.isAlive()) {
+            aiGame.terminate();
+            try {
+                aiThread.join(1000);
+            } catch (InterruptedException ie) {
+            }
+        } else {
+
+            aiGame = new GameRunner(game);
+            aiThread = new Thread(aiGame);
+
+            aiThread.start();
+        }
     }
 
     @Override
     public void draw(int w1, int w2) {
-        showResult(w1, w2, "DRAW");
+        Platform.runLater(() -> showResult(w1, w2, "DRAW"));
     }
 
     @Override
     public void player1Wins(int w1, int w2) {
-        showResult(w1, w2, "player1 WINS");
+        Platform.runLater(() -> showResult(w1, w2, "player1 WINS"));
     }
 
     @Override
     public void player2Wins(int w1, int w2) {
-        showResult(w1, w2, "player2 WINS");
+        Platform.runLater(() -> showResult(w1, w2, "player2 WINS"));
     }
 
     @Override
@@ -140,29 +165,35 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     }
 
     private void updatePlayer1(int playerPoints) {
-        lblPlayer1.setText(String.format("Player1: %d", playerPoints));
+        Platform.runLater(() -> lblPlayer1.setText(String.format("Player1: %d", playerPoints)));
     }
 
     private void updatePlayer2(int playerPoints) {
-        lblPlayer2.setText(String.format("Player2: %d", playerPoints));
+        Platform.runLater(() -> lblPlayer2.setText(String.format("Player2: %d", playerPoints)));
+    }
+    
+    private void updateDraws(int draws) {
+        Platform.runLater(() -> lblDraw.setText(String.format("Draws: %d", draws)));
     }
 
     private void reset() {
+        draws = 0;
         lblResult.setText("Game Result:");
         lblPlayer1Play.setText("Player1 played:");
         lblPlayer2Play.setText("Player2 played:");
         lblPlayer1.setText("Player1:");
         lblPlayer2.setText("Player2:");
+        lblDraw.setText("Draws:");
         imgPlayer1.setImage(new Image("images/Unknown.png"));
         imgPlayer2.setImage(new Image("images/Unknown.png"));
     }
-    
-    private void turnOff(Control control){
+
+    private void turnOff(Control control) {
         control.setManaged(false);
         control.setVisible(false);
     }
-    
-    private void turnOn(Control control){
+
+    private void turnOn(Control control) {
         control.setManaged(true);
         control.setVisible(true);
     }

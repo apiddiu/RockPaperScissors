@@ -6,7 +6,5 @@ public interface Player {
     
     int getMove();
 
-    int getPoints();
-
     void win();
 }
