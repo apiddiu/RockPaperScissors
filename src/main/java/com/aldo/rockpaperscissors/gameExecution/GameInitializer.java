@@ -2,20 +2,45 @@ package com.aldo.rockpaperscissors.gameExecution;
 
 import com.aldo.rockpaperscissors.game.Game;
 import com.aldo.rockpaperscissors.game.GameBuilder;
-import com.aldo.rockpaperscissors.game.GameResultListener;
+import com.aldo.rockpaperscissors.game.GameResultObserver;
+import com.aldo.rockpaperscissors.game.Player;
 import com.aldo.rockpaperscissors.gameConfiguration.GameConfiguration;
+import java.util.Arrays;
 
 public class GameInitializer {
 
-    public static Game aiGameExecution(GameResultListener resultListener) {
-        return GameBuilder.buildGame(GameConfiguration.weaponsCount(),
-                PlayerImpl.aiPlayer(GameConfiguration.weaponsCount()),
-                PlayerImpl.aiPlayer(GameConfiguration.weaponsCount()), resultListener);
+    public static Game aiGameExecution(GameResultObserver resultObserver, PlayerObserver player1Observer,
+            PlayerObserver player2Observer) {
+        
+        PlayerImpl aiPlayer1 = PlayerImpl.aiPlayer(GameConfiguration.weaponsCount(), player1Observer);
+        
+        waitToAvoidSameSeedInRandomGenerator();
+        
+        PlayerImpl aiPlayer2 = PlayerImpl.aiPlayer(GameConfiguration.weaponsCount(), player2Observer);
+        
+        return GameBuilder.buildGame(GameConfiguration.weaponsCount(), aiPlayer1, aiPlayer2, 
+                createCompositeObserver(resultObserver, aiPlayer1, aiPlayer2));
     }
     
-    public static Game humanGameExecution(MovePicker playerMovePicker, GameResultListener resultListener) {
-        return (GameBuilder.buildGame(GameConfiguration.weaponsCount(),
-                PlayerImpl.humanPlayer(playerMovePicker),
-                PlayerImpl.aiPlayer(GameConfiguration.weaponsCount()), resultListener));
+    public static Game humanGameExecution(MovePicker playerMovePicker, GameResultObserver resultObserver,
+            PlayerObserver player1Observer, PlayerObserver player2Observer) {
+        
+        PlayerImpl humanPlayer = PlayerImpl.humanPlayer(playerMovePicker, player1Observer);
+        PlayerImpl aiPlayer = PlayerImpl.aiPlayer(GameConfiguration.weaponsCount(), player2Observer);
+        
+        
+        return (GameBuilder.buildGame(GameConfiguration.weaponsCount(), humanPlayer, aiPlayer, 
+                createCompositeObserver(resultObserver, humanPlayer, aiPlayer)));
+    }
+    
+    private static GameResultObserver createCompositeObserver(GameResultObserver rO, Player p1, Player p2){
+        return new CompositeGameObserver(Arrays.asList(new GameResultObserver[]{rO, new PlayersGameObserver(p1, p2)}));
+    }
+    
+    private static void waitToAvoidSameSeedInRandomGenerator() {
+        try{
+            Thread.sleep(173);
+        }
+        catch(InterruptedException e){}
     }
 }

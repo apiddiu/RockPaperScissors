@@ -6,7 +6,6 @@ import static org.hamcrest.CoreMatchers.is;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,12 +13,14 @@ import static org.mockito.Mockito.when;
 public class PlayerTest {
 
     private MovePicker picker;
+    private PlayerObserver observer;
     private Player player;
 
     @Before
     public void setUp() {
         picker = mock(MovePicker.class);
-        player = PlayerImpl.humanPlayer(picker);
+        observer = mock(PlayerObserver.class);
+        player = PlayerImpl.humanPlayer(picker, observer);
     }
 
     @Test
@@ -35,12 +36,13 @@ public class PlayerTest {
     }
 
     @Test
-    public void afterAVictoryPlayerIncreasesPointsCounter() {
+    public void afterAVictoryPlayerIncreasesPointsCounterAndNotifiesObserver() {
         int playerPoints = player.getPoints();
         player.win();
         int playerNewPoints = player.getPoints();
 
         Assert.assertThat(playerNewPoints, is(equalTo(playerPoints + 1)));
+        verify(observer).pointsChanged(playerNewPoints);
     }
 
     public void givenMovePickerReturns(int move) {

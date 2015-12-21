@@ -7,23 +7,27 @@ class PlayerImpl implements Player {
     private int playerPoints;
     private int currentMove;
     private final MovePicker movePicker;
+    private final PlayerObserver observer;
     
-    public static PlayerImpl aiPlayer(int movesCount){
-        return new PlayerImpl(new RandomMovePicker(movesCount));
+    public static PlayerImpl aiPlayer(int movesCount, PlayerObserver observer){
+        return new PlayerImpl(new RandomMovePicker(movesCount), observer);
     }
     
-    public static PlayerImpl humanPlayer(MovePicker movePicker){
-        return new PlayerImpl(movePicker);
+    public static PlayerImpl humanPlayer(MovePicker movePicker, PlayerObserver observer){
+        return new PlayerImpl(movePicker, observer);
     }
 
-    private PlayerImpl(MovePicker movePicker) {
+    private PlayerImpl(MovePicker movePicker, PlayerObserver observer) {
         this.movePicker = movePicker;
         this.playerPoints = 0;
+        this.observer = observer;
+        observer.pointsChanged(0);
     }
 
     @Override
     public void win() {
         ++playerPoints;
+        observer.pointsChanged(playerPoints);
     }
 
     @Override
