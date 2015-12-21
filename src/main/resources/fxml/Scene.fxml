@@ -28,7 +28,7 @@
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <Button mnemonicParsing="false" onAction="#playPaper" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <Button fx:id="btnPaper" mnemonicParsing="false" onAction="#playPaper" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                             <graphic>
                                                 <ImageView>
                                                     <image>
@@ -40,7 +40,7 @@
                                                 <Tooltip text="Click to play PAPER" />
                                             </tooltip>
                                         </Button>
-                                        <Button mnemonicParsing="false" onAction="#playScissors" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                        <Button fx:id="btnScissors" mnemonicParsing="false" onAction="#playScissors" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                             <graphic>
                                                 <ImageView>
                                                     <image>
@@ -52,7 +52,7 @@
                                                 <Tooltip text="Click to play SCISSORS" />
                                             </tooltip>
                                         </Button>
-                                        <Button mnemonicParsing="false" onAction="#playRock" GridPane.rowIndex="1">
+                                        <Button fx:id="btnRock" mnemonicParsing="false" onAction="#playRock" GridPane.rowIndex="1">
                                             <graphic>
                                                 <ImageView>
                                                     <image>
@@ -79,7 +79,7 @@
                                         <Image url="@../images/Unknown.png" />
                                     </image>
                                 </ImageView>
-                                <Button layoutX="302.0" layoutY="15.0" mnemonicParsing="false" onAction="#playAiVsAi">
+                                <Button fx:id="btnAiVsAi" layoutX="302.0" layoutY="15.0" mnemonicParsing="false" onAction="#playAiVsAi">
                                     <graphic>
                                         <ImageView>
                                             <image>
