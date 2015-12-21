@@ -14,7 +14,7 @@ public final class Counter {
     }
 
     void decrease() {
-        observer.countChanged(++pointsCount);
+        observer.countChanged(--pointsCount);
     }
 
     void reset() {

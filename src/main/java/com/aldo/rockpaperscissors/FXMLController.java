@@ -23,7 +23,7 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
 
     private Weapons lastPlayerMove;
     private Game game;
-    private int draws = 0;
+    private GameRunner aiGame;
 
     @FXML
     private TitledPane pnlHuman;
@@ -61,9 +61,6 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     @FXML
     private ImageView imgPlayer2;
 
-    private GameRunner aiGame;
-    private Thread aiThread;
-
     @FXML
     private void startNewGame(ActionEvent event) {
         reset();
@@ -79,7 +76,7 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     private void startNewAiGame(ActionEvent event) {
         reset();
 
-        game = GameInitializer.aiGameExecution(this, this::updatePlayer1, this::updatePlayer2, this::updateDraws);
+        aiGame = GameInitializer.aiGameExecution(this, this::updatePlayer1, this::updatePlayer2, this::updateDraws);
 
         turnOff(pnlHuman);
         turnOn(pnlAi);
@@ -111,19 +108,7 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     }
 
     private void toggleAiGame() {
-        if (aiThread != null && aiThread.isAlive()) {
-            aiGame.terminate();
-            try {
-                aiThread.join(1000);
-            } catch (InterruptedException ie) {
-            }
-        } else {
-
-            aiGame = new GameRunner(game);
-            aiThread = new Thread(aiGame);
-
-            aiThread.start();
-        }
+        aiGame.toggle();
     }
 
     @Override
@@ -177,7 +162,7 @@ public class FXMLController implements Initializable, GameResultObserver, MovePi
     }
 
     private void reset() {
-        draws = 0;
+        aiGame.stop();
         lblResult.setText("Game Result:");
         lblPlayer1Play.setText("Player1 played:");
         lblPlayer2Play.setText("Player2 played:");

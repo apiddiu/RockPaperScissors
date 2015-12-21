@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class GameInitializer {
 
-    public static Game aiGameExecution(GameResultObserver resultObserver, CountObserver player1Observer,
+    public static GameRunnerImpl aiGameExecution(GameResultObserver resultObserver, CountObserver player1Observer,
             CountObserver player2Observer, CountObserver drawObserver) {
         
         Player aiPlayer1 = PlayerImpl.aiPlayer(GameConfiguration.weaponsCount(), player1Observer);
@@ -20,8 +20,8 @@ public class GameInitializer {
         Player aiPlayer2 = PlayerImpl.aiPlayer(GameConfiguration.weaponsCount(), player2Observer);
         Draw draw = new DrawImpl(drawObserver);
         
-        return GameBuilder.buildGame(GameConfiguration.weaponsCount(), aiPlayer1, aiPlayer2, 
-                createCompositeObserver(resultObserver, aiPlayer1, aiPlayer2, draw));
+        return new GameRunnerImpl(GameBuilder.buildGame(GameConfiguration.weaponsCount(), aiPlayer1, aiPlayer2, 
+                createCompositeObserver(resultObserver, aiPlayer1, aiPlayer2, draw)));
     }
     
     public static Game humanGameExecution(MovePicker playerMovePicker, GameResultObserver resultObserver,
